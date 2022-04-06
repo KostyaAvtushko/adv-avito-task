@@ -20,7 +20,8 @@ func GetAdv(ctx *fiber.Ctx) error {
 	database.DB.Where("id = ?", id).First(&adv)
 
 	fieldCount := len(query.Fields)
-	if fieldCount == 2 {
+	if fieldCount == 2 && ((query.Fields[0] == "desc" && query.Fields[1] == "photos") ||
+		(query.Fields[1] == "desc" && query.Fields[0] == "photos")) {
 		return ctx.JSON(fiber.Map{
 			"name":     adv.Name,
 			"desc":     adv.Description,
@@ -41,6 +42,11 @@ func GetAdv(ctx *fiber.Ctx) error {
 			"name":     adv.Name,
 			"photoURL": adv.PhotoURL,
 			"price":    adv.Price,
+		})
+	}
+	if fieldCount > 2 {
+		return ctx.JSON(fiber.Map{
+			"message": "to much fields",
 		})
 	}
 
