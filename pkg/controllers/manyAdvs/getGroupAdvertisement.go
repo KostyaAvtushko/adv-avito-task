@@ -27,10 +27,15 @@ func GetGroupAdv(ctx *fiber.Ctx) error {
 		advs = rateDate.FindEldest(advs)
 	}
 
-	readyGroupAdv := make([]entities.Advertisement, 10)
+	var readyGroupAdv [10]entities.AdvertisementGroupItem
 
 	for i := 0; i < 10; i++ {
-		readyGroupAdv[i] = advs[i]
+		adv := entities.AdvertisementGroupItem{
+			Name:     advs[i].Name,
+			PhotoURL: advs[i].PhotoURL[0],
+			Price:    advs[i].Price,
+		}
+		readyGroupAdv[i] = adv
 	}
 
 	return ctx.JSON(readyGroupAdv)

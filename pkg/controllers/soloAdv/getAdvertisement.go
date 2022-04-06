@@ -3,11 +3,14 @@ package soloAdv
 import (
 	"adv-backend-trainee-assignment/pkg/database"
 	"adv-backend-trainee-assignment/pkg/entities"
+	"errors"
 	"github.com/gofiber/fiber/v2"
+	"gorm.io/gorm"
 	"log"
 )
 
 func GetAdv(ctx *fiber.Ctx) error {
+
 	var adv entities.Advertisement
 
 	var query entities.Query
@@ -17,7 +20,8 @@ func GetAdv(ctx *fiber.Ctx) error {
 	}
 
 	id := ctx.Params("id")
-	database.DB.Where("id = ?", id).First(&adv)
+	err := database.DB.Where("id = ?", id).First(&adv).Error
+	errors.Is(err, gorm.ErrRecordNotFound)
 
 	fieldCount := len(query.Fields)
 	if fieldCount == 2 && ((query.Fields[0] == "desc" && query.Fields[1] == "photos") ||
