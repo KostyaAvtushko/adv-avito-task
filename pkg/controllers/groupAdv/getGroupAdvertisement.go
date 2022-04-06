@@ -1,4 +1,4 @@
-package manyAdvs
+package groupAdv
 
 import (
 	"adv-backend-trainee-assignment/internal/rateDate"
